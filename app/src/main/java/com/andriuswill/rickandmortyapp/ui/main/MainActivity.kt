@@ -3,11 +3,13 @@ package com.andriuswill.rickandmortyapp.ui.main
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -21,6 +23,7 @@ import com.andriuswill.rickandmortyapp.ui.characters.CharactersScreen
 import com.andriuswill.rickandmortyapp.ui.main.screens.EpisodesScreen
 import com.andriuswill.rickandmortyapp.ui.location.LocationsScreen
 
+@ExperimentalFoundationApi
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,9 +34,10 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@ExperimentalFoundationApi
 @Composable
 fun MainScreen() {
-    val viewModel: MainViewModel = viewModel()
+    val viewModel: MainViewModel = hiltViewModel()
     val navController = rememberNavController()
     Scaffold(
         topBar = { TopBar() },
@@ -41,19 +45,10 @@ fun MainScreen() {
             navController = navController
         ) }
     ) {
-        NavHost(
+        Navigation(
             navController = navController,
-            startDestination = NavigationItem.Characters.route){
-            composable(NavigationItem.Characters.route){
-                CharactersScreen(viewModel)
-            }
-            composable(NavigationItem.Locations.route){
-                LocationsScreen(viewModel)
-            }
-            composable(NavigationItem.Episodes.route){
-                EpisodesScreen(viewModel)
-            }
-        }
+            viewModel = viewModel
+        )
     }
 }
 
@@ -91,8 +86,8 @@ fun BottomNavigationBar(navController: NavController) {
                 unselectedContentColor = Color.White.copy(0.4f),
                 onClick = {
                     navController.navigate(item.route){
-                        restoreState = true
                         launchSingleTop = true
+                        restoreState = true
                     }
                 }
             )
@@ -100,6 +95,7 @@ fun BottomNavigationBar(navController: NavController) {
     }
 }
 
+@ExperimentalFoundationApi
 @Composable
 fun Navigation(navController: NavHostController, viewModel: MainViewModel){
     NavHost(
@@ -120,5 +116,5 @@ fun Navigation(navController: NavHostController, viewModel: MainViewModel){
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    MainScreen()
+    //MainScreen()
 }
