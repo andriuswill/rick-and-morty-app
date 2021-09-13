@@ -10,20 +10,25 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.andriuswill.rickandmortyapp.ui.component.NavigationItem
+import coil.annotation.ExperimentalCoilApi
+import com.andriuswill.rickandmortyapp.ui.component.navigation.NavigationMainItem
 import dagger.hilt.android.AndroidEntryPoint
 import com.andriuswill.rickandmortyapp.R
-import com.andriuswill.rickandmortyapp.ui.characters.CharactersScreen
-import com.andriuswill.rickandmortyapp.ui.main.screens.EpisodesScreen
-import com.andriuswill.rickandmortyapp.ui.location.LocationsScreen
+import com.andriuswill.rickandmortyapp.ui.characters.CharactersListScreen
+import com.andriuswill.rickandmortyapp.ui.location.LocationsListScreen
+import com.andriuswill.rickandmortyapp.ui.main.charactersList.CharactersListViewModel
+import com.andriuswill.rickandmortyapp.ui.main.charactersList.EpisodesListScreen
+import com.andriuswill.rickandmortyapp.ui.main.episodesList.EpisodesListViewModel
+import com.andriuswill.rickandmortyapp.ui.main.locationsList.LocationsListViewModel
 
+@ExperimentalCoilApi
 @ExperimentalFoundationApi
+@ExperimentalMaterialApi
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,20 +39,22 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@ExperimentalCoilApi
 @ExperimentalFoundationApi
+@ExperimentalMaterialApi
 @Composable
 fun MainScreen() {
-    val viewModel: MainViewModel = hiltViewModel()
     val navController = rememberNavController()
     Scaffold(
         topBar = { TopBar() },
-        bottomBar = { BottomNavigationBar(
-            navController = navController
-        ) }
+        bottomBar = {
+            BottomNavigationBar(
+                navController = navController
+            )
+        }
     ) {
         Navigation(
-            navController = navController,
-            viewModel = viewModel
+            navController = navController
         )
     }
 }
@@ -64,9 +71,9 @@ fun TopBar() {
 @Composable
 fun BottomNavigationBar(navController: NavController) {
     val items = listOf(
-        NavigationItem.Characters,
-        NavigationItem.Locations,
-        NavigationItem.Episodes
+        NavigationMainItem.CharactersList,
+        NavigationMainItem.LocationsList,
+        NavigationMainItem.EpisodesList
     )
     BottomNavigation(
         backgroundColor = MaterialTheme.colors.primary,
@@ -82,10 +89,10 @@ fun BottomNavigationBar(navController: NavController) {
                 },
                 alwaysShowLabel = true,
                 selected = false,
-                selectedContentColor = Color.White,
+                selectedContentColor = MaterialTheme.colors.secondary,
                 unselectedContentColor = Color.White.copy(0.4f),
                 onClick = {
-                    navController.navigate(item.route){
+                    navController.navigate(item.route) {
                         launchSingleTop = true
                         restoreState = true
                     }
@@ -95,26 +102,34 @@ fun BottomNavigationBar(navController: NavController) {
     }
 }
 
+@ExperimentalCoilApi
 @ExperimentalFoundationApi
+@ExperimentalMaterialApi
 @Composable
-fun Navigation(navController: NavHostController, viewModel: MainViewModel){
+fun Navigation(navController: NavHostController) {
     NavHost(
         navController = navController,
-        startDestination = NavigationItem.Characters.route){
-        composable(NavigationItem.Characters.route){
-            CharactersScreen(viewModel)
+        startDestination = NavigationMainItem.CharactersList.route
+    ) {
+        composable(NavigationMainItem.CharactersList.route) {
+            val viewModel: CharactersListViewModel = hiltViewModel(it)
+            CharactersListScreen(viewModel = viewModel)
         }
-        composable(NavigationItem.Locations.route){
-            LocationsScreen(viewModel)
+        composable(NavigationMainItem.LocationsList.route) {
+            val viewModel: LocationsListViewModel = hiltViewModel(it)
+            LocationsListScreen(viewModel = viewModel)
         }
-        composable(NavigationItem.Episodes.route){
-            EpisodesScreen(viewModel)
+        composable(NavigationMainItem.EpisodesList.route) {
+            val viewModel: EpisodesListViewModel = hiltViewModel(it)
+            EpisodesListScreen(viewModel = viewModel)
         }
     }
 }
 
+@ExperimentalMaterialApi
+@ExperimentalFoundationApi
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    //MainScreen()
+    MainScreen()
 }
