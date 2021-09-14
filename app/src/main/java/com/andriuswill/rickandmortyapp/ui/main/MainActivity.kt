@@ -6,14 +6,17 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import coil.annotation.ExperimentalCoilApi
 import com.andriuswill.rickandmortyapp.ui.navigation.NavigationMainItem
@@ -25,6 +28,7 @@ import com.andriuswill.rickandmortyapp.ui.main.charactersList.CharactersListView
 import com.andriuswill.rickandmortyapp.ui.main.charactersList.EpisodesListScreen
 import com.andriuswill.rickandmortyapp.ui.main.episodesList.EpisodesListViewModel
 import com.andriuswill.rickandmortyapp.ui.main.locationsList.LocationsListViewModel
+import com.andriuswill.rickandmortyapp.ui.theme.RickAndMortyAppTheme
 
 @ExperimentalCoilApi
 @ExperimentalFoundationApi
@@ -34,7 +38,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MainScreen()
+            RickAndMortyAppTheme {
+                MainScreen()
+            }
         }
     }
 }
@@ -63,7 +69,7 @@ fun MainScreen() {
 fun TopBar() {
     TopAppBar(
         title = { Text(text = stringResource(R.string.app_name)) },
-        backgroundColor = MaterialTheme.colors.primary,
+        backgroundColor = MaterialTheme.colors.primaryVariant,
         contentColor = MaterialTheme.colors.secondary
     )
 }
@@ -76,9 +82,11 @@ fun BottomNavigationBar(navController: NavController) {
         NavigationMainItem.EpisodesList
     )
     BottomNavigation(
-        backgroundColor = MaterialTheme.colors.primary,
-        contentColor = MaterialTheme.colors.secondary
+        backgroundColor = MaterialTheme.colors.primaryVariant
     ) {
+        val navBackStateEntry by navController.currentBackStackEntryAsState()
+        val currentDestination = navBackStateEntry?.destination
+
         items.forEach { item ->
             BottomNavigationItem(
                 icon = {
@@ -87,10 +95,12 @@ fun BottomNavigationBar(navController: NavController) {
                 label = {
                     Text(text = item.title)
                 },
-                alwaysShowLabel = true,
-                selected = false,
+                unselectedContentColor = MaterialTheme.colors.primary,
                 selectedContentColor = MaterialTheme.colors.secondary,
-                unselectedContentColor = Color.White.copy(0.4f),
+                alwaysShowLabel = true,
+                selected = currentDestination?.hierarchy?.any { navDestination ->
+                    navDestination.route == item.route
+                } == true,
                 onClick = {
                     navController.navigate(item.route) {
                         launchSingleTop = true
@@ -126,10 +136,13 @@ fun Navigation(navController: NavHostController) {
     }
 }
 
+@ExperimentalCoilApi
 @ExperimentalMaterialApi
 @ExperimentalFoundationApi
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    MainScreen()
+    RickAndMortyAppTheme{
+        MainScreen()
+    }
 }
