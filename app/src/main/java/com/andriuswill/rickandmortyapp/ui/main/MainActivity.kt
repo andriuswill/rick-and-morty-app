@@ -16,7 +16,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import coil.annotation.ExperimentalCoilApi
-import com.andriuswill.rickandmortyapp.ui.component.navigation.NavigationMainItem
+import com.andriuswill.rickandmortyapp.ui.navigation.NavigationMainItem
 import dagger.hilt.android.AndroidEntryPoint
 import com.andriuswill.rickandmortyapp.R
 import com.andriuswill.rickandmortyapp.ui.characters.CharactersListScreen

@@ -16,8 +16,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.andriuswill.rickandmortyapp.ui.component.navigation.NavigationDetailItem
-import com.andriuswill.rickandmortyapp.ui.component.navigation.NavigationMainItem
+import com.andriuswill.rickandmortyapp.extensions.getIdFromUrl
+import com.andriuswill.rickandmortyapp.ui.component.LocationCard
+import com.andriuswill.rickandmortyapp.ui.navigation.NavigationDetailItem
 import com.andriuswill.rickandmortyapp.ui.detail.DetailActivity
 import com.andriuswill.rickandmortyapp.ui.main.locationsList.LocationsListViewModel
 
@@ -26,6 +27,7 @@ import com.andriuswill.rickandmortyapp.ui.main.locationsList.LocationsListViewMo
 fun LocationsListScreen(
     viewModel: LocationsListViewModel
 ) {
+    val context = LocalContext.current
 
     val locations = viewModel.locationsState.value
 
@@ -36,52 +38,17 @@ fun LocationsListScreen(
         modifier = Modifier.fillMaxSize()
     ) {
         items(locations) { item ->
-            LocationCard(
-                locationName = item.name,
-                locationUrl = item.url
-            )
+            LocationCard(item.name){
+                DetailActivity.start(
+                    context,
+                    NavigationDetailItem.LocationDetail.route,
+                    item.url.getIdFromUrl()
+                )
+            }
         }
     }
 }
 
-@ExperimentalMaterialApi
-@Composable
-fun LocationCard(
-    locationName: String,
-    locationUrl: String
-) {
-    val context = LocalContext.current
-    Card(
-        shape = RoundedCornerShape(4.dp),
-        border = BorderStroke(
-            width = 2.dp,
-            color = Color.Black
-        ),
-        modifier = Modifier
-            .padding(4.dp),
-        elevation = 2.dp,
-        onClick = {
-            DetailActivity.start(
-                context,
-                NavigationDetailItem.LocationDetail.route,
-                locationUrl
-            )
-        }
-    ) {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(48.dp)
-        ) {
-            Text(
-                text = locationName,
-                color = Color.Black,
-                textAlign = TextAlign.Center
-            )
-        }
-    }
-}
 
 
 @Preview(showBackground = true)

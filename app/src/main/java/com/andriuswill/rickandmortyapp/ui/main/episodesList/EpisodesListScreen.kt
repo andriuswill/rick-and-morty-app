@@ -16,8 +16,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.andriuswill.rickandmortyapp.ui.component.navigation.NavigationDetailItem
-import com.andriuswill.rickandmortyapp.ui.component.navigation.NavigationMainItem
+import com.andriuswill.rickandmortyapp.extensions.getIdFromUrl
+import com.andriuswill.rickandmortyapp.ui.component.EpisodeCard
+import com.andriuswill.rickandmortyapp.ui.navigation.NavigationDetailItem
 import com.andriuswill.rickandmortyapp.ui.detail.DetailActivity
 import com.andriuswill.rickandmortyapp.ui.main.episodesList.EpisodesListViewModel
 
@@ -26,6 +27,7 @@ import com.andriuswill.rickandmortyapp.ui.main.episodesList.EpisodesListViewMode
 fun EpisodesListScreen(
     viewModel: EpisodesListViewModel
 ) {
+    val context = LocalContext.current
 
     val episodes = viewModel.episodesState.value
 
@@ -35,60 +37,16 @@ fun EpisodesListScreen(
         contentPadding = PaddingValues(4.dp),
         modifier = Modifier.fillMaxSize()
     ) {
+
         items(episodes) { item ->
             EpisodeCard(
                 episodeName = item.name,
-                episodeInfo= item.episode,
-                episodeUrl = item.url
-            )
-        }
-    }
-}
-
-@ExperimentalMaterialApi
-@Composable
-fun EpisodeCard(
-    episodeName: String,
-    episodeInfo: String,
-    episodeUrl: String
-) {
-    val context = LocalContext.current
-    Card(
-        shape = RoundedCornerShape(4.dp),
-        border = BorderStroke(
-            width = 2.dp,
-            color = Color.Black
-        ),
-        modifier = Modifier
-            .padding(4.dp),
-        elevation = 2.dp,
-        onClick = {
-            DetailActivity.start(
-                context,
-                NavigationDetailItem.EpisodeDetail.route,
-                episodeUrl
-            )
-        }
-    ) {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(60.dp)
-        ) {
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+                episodeInfo= item.episode
             ) {
-                Text(
-                    text = episodeInfo,
-                    color = Color.Black,
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    text = episodeName,
-                    color = Color.Black,
-                    textAlign = TextAlign.Center
+                DetailActivity.start(
+                    context,
+                    NavigationDetailItem.EpisodeDetail.route,
+                    item.url.getIdFromUrl()
                 )
             }
         }

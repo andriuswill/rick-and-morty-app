@@ -1,8 +1,6 @@
 package com.andriuswill.rickandmortyapp.api
 
-import com.andriuswill.rickandmortyapp.model.responses.CharactersListResponse
-import com.andriuswill.rickandmortyapp.model.responses.EpisodesListResponse
-import com.andriuswill.rickandmortyapp.model.responses.LocationsListResponse
+import com.andriuswill.rickandmortyapp.model.responses.*
 
 interface Repository {
 
@@ -11,5 +9,13 @@ interface Repository {
     suspend fun getLocationsList(): LocationsListResponse
 
     suspend fun getEpisodesList(): EpisodesListResponse
+
+
+    suspend fun getCharacterDetail(characterId: String): CharacterResponse
+
+    suspend fun getLocationDetail(locationId: String): LocationResponse
+
+    suspend fun getEpisodeDetail(episodeId: String): EpisodeResponse
+
 
 }

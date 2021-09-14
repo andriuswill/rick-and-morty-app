@@ -20,8 +20,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
-import com.andriuswill.rickandmortyapp.ui.component.navigation.NavigationDetailItem
-import com.andriuswill.rickandmortyapp.ui.component.navigation.NavigationMainItem
+import com.andriuswill.rickandmortyapp.extensions.getIdFromUrl
+import com.andriuswill.rickandmortyapp.ui.navigation.NavigationDetailItem
 import com.andriuswill.rickandmortyapp.ui.detail.DetailActivity
 import com.andriuswill.rickandmortyapp.ui.main.charactersList.CharactersListViewModel
 
@@ -52,7 +52,7 @@ fun CharactersListScreen(
                 CharacterCard(
                     characterName = item.name,
                     characterImage = item.image,
-                    characterUrl = item.url
+                    characterId = item.url.getIdFromUrl()
                 )
             }
         }
@@ -66,7 +66,7 @@ fun CharactersListScreen(
 fun CharacterCard(
     characterName: String,
     characterImage: String,
-    characterUrl: String
+    characterId: String
 ) {
     val context = LocalContext.current
     Card(
@@ -82,7 +82,7 @@ fun CharacterCard(
             DetailActivity.start(
                 context,
                 NavigationDetailItem.CharactersDetail.route,
-                characterUrl
+                characterId
             )
         }
     ) {
@@ -116,6 +116,7 @@ fun CharacterCard(
     }
 }
 
+@ExperimentalCoilApi
 @ExperimentalMaterialApi
 @Preview(showBackground = true)
 @Composable

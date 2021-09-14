@@ -1,4 +1,4 @@
-package com.andriuswill.rickandmortyapp.ui.component.navigation
+package com.andriuswill.rickandmortyapp.ui.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
