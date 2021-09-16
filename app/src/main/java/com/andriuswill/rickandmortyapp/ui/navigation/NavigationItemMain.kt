@@ -6,22 +6,22 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.ui.graphics.vector.ImageVector
 
-sealed class NavigationMainItem(
+sealed class NavigationItemMain(
     var route: String,
     var icon: ImageVector,
     var title: String
 ) {
-    object CharactersList : NavigationMainItem(
+    object CharactersList : NavigationItemMain(
         "characters_list",
         Icons.Default.Person,
         "Characters"
     )
-    object LocationsList : NavigationMainItem(
+    object LocationsList : NavigationItemMain(
         "locations_list",
         Icons.Default.Place,
         "Locations"
     )
-    object EpisodesList : NavigationMainItem(
+    object EpisodesList : NavigationItemMain(
         "episodes_list",
         Icons.Default.List,
         "Episodes"

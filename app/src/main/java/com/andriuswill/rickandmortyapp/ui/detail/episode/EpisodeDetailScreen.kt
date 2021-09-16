@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.andriuswill.rickandmortyapp.extensions.getIdFromUrl
 import com.andriuswill.rickandmortyapp.ui.component.EpisodeCard
-import com.andriuswill.rickandmortyapp.ui.navigation.NavigationDetailItem
+import com.andriuswill.rickandmortyapp.ui.navigation.NavigationItemDetail
 
 
 @ExperimentalMaterialApi
@@ -27,14 +27,13 @@ fun EpisodeDetailScreen(
         contentPadding = PaddingValues(4.dp),
         modifier = Modifier.fillMaxSize()
     ) {
-
         items(episodeDetail?.characters.orEmpty()) { url ->
             EpisodeCard(
                 episodeName = url,
                 episodeInfo= url
             ) {
                 navController.navigate(
-                    route = NavigationDetailItem
+                    route = NavigationItemDetail
                         .CharactersDetail
                         .getWithArg(url.getIdFromUrl()),
                 )

@@ -7,7 +7,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -19,7 +18,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import coil.annotation.ExperimentalCoilApi
-import com.andriuswill.rickandmortyapp.ui.navigation.NavigationMainItem
+import com.andriuswill.rickandmortyapp.ui.navigation.NavigationItemMain
 import dagger.hilt.android.AndroidEntryPoint
 import com.andriuswill.rickandmortyapp.R
 import com.andriuswill.rickandmortyapp.ui.characters.CharactersListScreen
@@ -28,6 +27,7 @@ import com.andriuswill.rickandmortyapp.ui.main.charactersList.CharactersListView
 import com.andriuswill.rickandmortyapp.ui.main.charactersList.EpisodesListScreen
 import com.andriuswill.rickandmortyapp.ui.main.episodesList.EpisodesListViewModel
 import com.andriuswill.rickandmortyapp.ui.main.locationsList.LocationsListViewModel
+import com.andriuswill.rickandmortyapp.ui.navigation.NavigationHostMain
 import com.andriuswill.rickandmortyapp.ui.theme.RickAndMortyAppTheme
 
 @ExperimentalCoilApi
@@ -59,7 +59,7 @@ fun MainScreen() {
             )
         }
     ) {
-        Navigation(
+        NavigationHostMain(
             navController = navController
         )
     }
@@ -69,20 +69,20 @@ fun MainScreen() {
 fun TopBar() {
     TopAppBar(
         title = { Text(text = stringResource(R.string.app_name)) },
-        backgroundColor = MaterialTheme.colors.primaryVariant,
-        contentColor = MaterialTheme.colors.secondary
+        backgroundColor = MaterialTheme.colors.primary,
+        contentColor = MaterialTheme.colors.surface
     )
 }
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {
     val items = listOf(
-        NavigationMainItem.CharactersList,
-        NavigationMainItem.LocationsList,
-        NavigationMainItem.EpisodesList
+        NavigationItemMain.CharactersList,
+        NavigationItemMain.LocationsList,
+        NavigationItemMain.EpisodesList
     )
     BottomNavigation(
-        backgroundColor = MaterialTheme.colors.primaryVariant
+        backgroundColor = MaterialTheme.colors.primary
     ) {
         val navBackStateEntry by navController.currentBackStackEntryAsState()
         val currentDestination = navBackStateEntry?.destination
@@ -95,7 +95,7 @@ fun BottomNavigationBar(navController: NavController) {
                 label = {
                     Text(text = item.title)
                 },
-                unselectedContentColor = MaterialTheme.colors.primary,
+                unselectedContentColor = MaterialTheme.colors.surface,
                 selectedContentColor = MaterialTheme.colors.secondary,
                 alwaysShowLabel = true,
                 selected = currentDestination?.hierarchy?.any { navDestination ->
@@ -112,29 +112,6 @@ fun BottomNavigationBar(navController: NavController) {
     }
 }
 
-@ExperimentalCoilApi
-@ExperimentalFoundationApi
-@ExperimentalMaterialApi
-@Composable
-fun Navigation(navController: NavHostController) {
-    NavHost(
-        navController = navController,
-        startDestination = NavigationMainItem.CharactersList.route
-    ) {
-        composable(NavigationMainItem.CharactersList.route) {
-            val viewModel: CharactersListViewModel = hiltViewModel(it)
-            CharactersListScreen(viewModel = viewModel)
-        }
-        composable(NavigationMainItem.LocationsList.route) {
-            val viewModel: LocationsListViewModel = hiltViewModel(it)
-            LocationsListScreen(viewModel = viewModel)
-        }
-        composable(NavigationMainItem.EpisodesList.route) {
-            val viewModel: EpisodesListViewModel = hiltViewModel(it)
-            EpisodesListScreen(viewModel = viewModel)
-        }
-    }
-}
 
 @ExperimentalCoilApi
 @ExperimentalMaterialApi

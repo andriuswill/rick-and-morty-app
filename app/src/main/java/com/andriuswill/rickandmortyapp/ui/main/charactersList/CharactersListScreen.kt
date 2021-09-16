@@ -3,6 +3,7 @@ package com.andriuswill.rickandmortyapp.ui.characters
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
@@ -16,12 +17,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.andriuswill.rickandmortyapp.extensions.getIdFromUrl
-import com.andriuswill.rickandmortyapp.ui.navigation.NavigationDetailItem
+import com.andriuswill.rickandmortyapp.ui.navigation.NavigationItemDetail
 import com.andriuswill.rickandmortyapp.ui.detail.DetailActivity
 import com.andriuswill.rickandmortyapp.ui.main.charactersList.CharactersListViewModel
 
@@ -37,24 +39,22 @@ fun CharactersListScreen(
 
     viewModel.getCharacters()
 
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        LazyVerticalGrid(
-            cells = GridCells.Fixed(3),
-            contentPadding = PaddingValues(4.dp),
-            modifier = Modifier.padding(
+
+    LazyVerticalGrid(
+        cells = GridCells.Fixed(3),
+        contentPadding = PaddingValues(4.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(
                 bottom = 52.dp
             )
-        ) {
-            items(characters) { item ->
-                CharacterCard(
-                    characterName = item.name,
-                    characterImage = item.image,
-                    characterId = item.url.getIdFromUrl()
-                )
-            }
+    ) {
+        items(characters) { item ->
+            CharacterCard(
+                characterName = item.name,
+                characterImage = item.image,
+                characterId = item.url.getIdFromUrl()
+            )
         }
     }
 }
@@ -75,13 +75,15 @@ fun CharacterCard(
             width = 2.dp,
             color = Color.Black
         ),
+
         modifier = Modifier
+            .aspectRatio(0.75F)
             .padding(4.dp),
         elevation = 2.dp,
         onClick = {
             DetailActivity.start(
                 context,
-                NavigationDetailItem.CharactersDetail.route,
+                NavigationItemDetail.CharactersDetail.route,
                 characterId
             )
         }
@@ -97,19 +99,21 @@ fun CharacterCard(
                 contentDescription = characterName,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(128.dp)
+                    .weight(1F)
             )
             Box(
                 contentAlignment = Alignment.Center,
+
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(48.dp)
+                    .padding(4.dp)
             ) {
                 Text(
                     text = characterName,
                     color = Color.Black,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1
                 )
             }
         }

@@ -5,14 +5,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.andriuswill.rickandmortyapp.extensions.getIdFromUrl
 import com.andriuswill.rickandmortyapp.ui.component.LocationCard
-import com.andriuswill.rickandmortyapp.ui.navigation.NavigationDetailItem
+import com.andriuswill.rickandmortyapp.ui.navigation.NavigationItemDetail
 
 
 @ExperimentalMaterialApi
@@ -34,7 +33,7 @@ fun LocationDetailScreen(
                 locationName = url
             ) {
                 navController.navigate(
-                    route = NavigationDetailItem
+                    route = NavigationItemDetail
                         .CharactersDetail
                         .getWithArg(url.getIdFromUrl()),
                 )

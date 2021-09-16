@@ -18,7 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.andriuswill.rickandmortyapp.extensions.getIdFromUrl
 import com.andriuswill.rickandmortyapp.ui.component.LocationCard
-import com.andriuswill.rickandmortyapp.ui.navigation.NavigationDetailItem
+import com.andriuswill.rickandmortyapp.ui.navigation.NavigationItemDetail
 import com.andriuswill.rickandmortyapp.ui.detail.DetailActivity
 import com.andriuswill.rickandmortyapp.ui.main.locationsList.LocationsListViewModel
 
@@ -41,7 +41,7 @@ fun LocationsListScreen(
             LocationCard(item.name){
                 DetailActivity.start(
                     context,
-                    NavigationDetailItem.LocationDetail.route,
+                    NavigationItemDetail.LocationDetail.route,
                     item.url.getIdFromUrl()
                 )
             }

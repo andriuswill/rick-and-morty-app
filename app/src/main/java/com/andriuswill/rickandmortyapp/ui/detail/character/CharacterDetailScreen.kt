@@ -11,9 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.andriuswill.rickandmortyapp.extensions.getIdFromUrl
-import com.andriuswill.rickandmortyapp.ui.component.EpisodeCard
 import com.andriuswill.rickandmortyapp.ui.component.LocationCard
-import com.andriuswill.rickandmortyapp.ui.navigation.NavigationDetailItem
+import com.andriuswill.rickandmortyapp.ui.navigation.NavigationItemDetail
 
 @ExperimentalMaterialApi
 @Composable
@@ -30,7 +29,7 @@ fun CharacterDetailScreen(
             locationName = characterDetail?.location?.name.orEmpty()
         ) {
             navController.navigate(
-                route = NavigationDetailItem
+                route = NavigationItemDetail
                     .LocationDetail
                     .getWithArg(
                         characterDetail?.location?.url?.getIdFromUrl().orEmpty()
@@ -48,7 +47,7 @@ fun CharacterDetailScreen(
                     locationName = url
                 ) {
                     navController.navigate(
-                        route = NavigationDetailItem
+                        route = NavigationItemDetail
                             .EpisodeDetail
                             .getWithArg(url.getIdFromUrl()),
                     )

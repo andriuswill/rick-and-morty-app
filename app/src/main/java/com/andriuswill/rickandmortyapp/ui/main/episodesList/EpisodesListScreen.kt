@@ -13,12 +13,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.andriuswill.rickandmortyapp.extensions.getIdFromUrl
 import com.andriuswill.rickandmortyapp.ui.component.EpisodeCard
-import com.andriuswill.rickandmortyapp.ui.navigation.NavigationDetailItem
+import com.andriuswill.rickandmortyapp.ui.navigation.NavigationItemDetail
 import com.andriuswill.rickandmortyapp.ui.detail.DetailActivity
 import com.andriuswill.rickandmortyapp.ui.main.episodesList.EpisodesListViewModel
 
@@ -45,7 +44,7 @@ fun EpisodesListScreen(
             ) {
                 DetailActivity.start(
                     context,
-                    NavigationDetailItem.EpisodeDetail.route,
+                    NavigationItemDetail.EpisodeDetail.route,
                     item.url.getIdFromUrl()
                 )
             }
