@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.andriuswill.rickandmortyapp.extensions.getIdFromUrl
+import com.andriuswill.rickandmortyapp.ui.component.CharacterCard
 import com.andriuswill.rickandmortyapp.ui.navigation.NavigationItemDetail
 import com.andriuswill.rickandmortyapp.ui.detail.DetailActivity
 import com.andriuswill.rickandmortyapp.ui.main.charactersList.CharactersListViewModel
@@ -60,65 +61,7 @@ fun CharactersListScreen(
 }
 
 
-@ExperimentalCoilApi
-@ExperimentalMaterialApi
-@Composable
-fun CharacterCard(
-    characterName: String,
-    characterImage: String,
-    characterId: String
-) {
-    val context = LocalContext.current
-    Card(
-        shape = RoundedCornerShape(4.dp),
-        border = BorderStroke(
-            width = 2.dp,
-            color = Color.Black
-        ),
 
-        modifier = Modifier
-            .aspectRatio(0.75F)
-            .padding(4.dp),
-        elevation = 2.dp,
-        onClick = {
-            DetailActivity.start(
-                context,
-                NavigationItemDetail.CharactersDetail.route,
-                characterId
-            )
-        }
-    ) {
-        Column(
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Image(
-                painter = rememberImagePainter(
-                    data = characterImage
-                ),
-                contentDescription = characterName,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .weight(1F)
-            )
-            Box(
-                contentAlignment = Alignment.Center,
-
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(4.dp)
-            ) {
-                Text(
-                    text = characterName,
-                    color = Color.Black,
-                    textAlign = TextAlign.Center,
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1
-                )
-            }
-        }
-    }
-}
 
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
